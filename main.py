@@ -1,2 +1,2 @@
 print("Hello everybody!")
-print("Hope everone is having a good day!")
+print("Hope everyone is having a great day!")
