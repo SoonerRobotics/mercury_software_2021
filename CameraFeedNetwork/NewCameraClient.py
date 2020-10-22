@@ -1,5 +1,6 @@
 ###
 # "Computer" that the robot "Server" will send camera data to.
+# Integrated with GUI.
 # Gotta love stack overflow
 ###
 
@@ -41,9 +42,9 @@ def main():
             # extracting frame from compression/encoding
             frame = pickle.loads(frameData)
 
-            # because it would socket crash if function would return anything,
-            # could not directly connect the "frame" to the "GUI." As a result,
-            # I just had it constantly write the frame to a file, which would be parse
+            # because socket would rash if function would return anything,
+            # I couldn't directly connect the "frame" to the "GUI." As a result,
+            # I just had it constantly write the frame to a file, which would be parsed
             # by the GUI
             cv2.imwrite("frame.jpg", frame)
 

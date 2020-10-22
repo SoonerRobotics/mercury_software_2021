@@ -1,6 +1,5 @@
 ###
 # "Robot" sending data to computer "Server"
-# Integrated with GUI.
 ###
 
 import cv2, socket, pickle, struct
