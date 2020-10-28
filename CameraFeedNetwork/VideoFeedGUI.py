@@ -19,14 +19,15 @@ def GUI():
     def displayFrame():
 
         # scrapes frame from file
-        imageFrame = cv2.imread("frame.jpg")
-        frame = np.ones((480, 640, 3), np.uint8)
+        frame = cv2.imread("frame.dib", cv2.IMREAD_UNCHANGED)
 
         try:
-            frame = cv2.cvtColor(imageFrame, cv2.COLOR_BGR2RGB)
-        except cv2.error as e:
-            # filler function for Except statement
-            empty = None
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        except (TypeError, ValueError, cv2.error) as e:
+            # Note: there is this really annoying ValueError that
+            # I can't catch with try-except??
+            # "raise ValueError("array2qimage can only convert 2D or 3D arrays (got %d dimensions)" % _np.ndim(array))"
+            pass
 
         image = qimage2ndarray.array2qimage(frame)
         label.setPixmap(QPixmap.fromImage(image))

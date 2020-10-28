@@ -3,6 +3,7 @@
 ###
 
 import cv2, socket, pickle, struct
+from multiprocessing import Process
 import numpy as np
 
 def main():
@@ -18,6 +19,9 @@ def main():
         connection, address = s.accept()
 
         while True:
+            #keyData = connection.recv(1024)
+            #print("data: ", (str(keyData))[1:])
+
             # camera feed
             _, frame = videoFeed.read()
             frame = cv2.resize(frame, (640, 480))
@@ -32,6 +36,7 @@ def main():
 
             # sends size of data and data itself over the socket
             connection.sendall(encodedSize + data)
+
 
 if __name__ == "__main__":
     main()

@@ -5,8 +5,11 @@
 ###
 
 import cv2, socket, pickle, struct
+import keyboard
 import numpy as np
 import time
+
+#frame = cv2.imread("frame.png")
 
 def main():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -20,6 +23,8 @@ def main():
         print("socket ready")
 
         while True:
+
+            #s.sendall(str(keyboard.read_key()).encode())
 
             # scraping the data size from encoded socket connection
             while (len(dataBytes) < loadSize):
@@ -40,13 +45,14 @@ def main():
             dataBytes = dataBytes[dataSize:]
 
             # extracting frame from compression/encoding
+            #global frame
             frame = pickle.loads(frameData)
 
-            # because socket would rash if function would return anything,
-            # I couldn't directly connect the "frame" to the "GUI." As a result,
-            # I just had it constantly write the frame to a file, which would be parsed
-            # by the GUI
-            cv2.imwrite("frame.jpg", frame)
+            # In GUI, I have multi-processing for making GUI and receiving camera data. Because
+            # they are separate processes, having the camera-data-frame be a global would not work.
+            # As a result, camera data will be written to a .dib file (so it doesn't stutter) and GUI
+            # will read from GUI file
+            cv2.imwrite("frame.dib", frame)
 
             #time.sleep(0.01)
             #return frame
