@@ -1,17 +1,13 @@
 #Version 2.0
 
+import math
 import pygame
-#import serial
 
 pygame.init()
-window = pygame.display.set_mode((400,400))
-pygame.display.set_caption("Mercury Controller")
 clock = pygame.time.Clock()
 pygame.joystick.init()
 
 DEAD_ZONE_Y = 0.15
-
-#arduino = serial.Serial("COM3",9600,timeout=1)
 
 done = False
 while not done:
@@ -36,8 +32,6 @@ while not done:
             if abs(axis[i]) < DEAD_ZONE_Y:
                 axis[i] = 0
         #print(axis)
-        #arduino.write(axis[0], axis[1])
-        #x = arduino.read(20)
           
         #Buttons
         buttons = joystick.get_numbuttons()
@@ -52,7 +46,13 @@ while not done:
         for i in range(hats):
             hat.append(joystick.get_hat(i))
         #print(hat)
+        
+        if (joystick.get_button(7) == 1):
+            done = True
+            pygame.quit()
+            break
+        
 
     clock.tick(20)
 
-pygame.quit()
+print("program done")
