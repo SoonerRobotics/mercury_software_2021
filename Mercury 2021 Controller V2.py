@@ -52,7 +52,6 @@ while not done:
             pygame.quit()
             break
         
-
     clock.tick(20)
 
 print("program done")
