@@ -7,8 +7,28 @@ sObj = serial.Serial("COM5", 9600, timeout=0.05)
 pygame.init()
 clock = pygame.time.Clock()
 pygame.joystick.init()
+joystick = pygame.joystick.Joystick(0)
+
+isTank = True
+
+def filter(x):
+    if abs(x) < 0.1:
+        x = 0
+    return x
 
 while True:
+    leftPower = 0
+    rightPower = 0
+
+    if (joystick.get_button(4) == 1 and isTank):
+        print("NOT TANK TIME :(")
+        isTank = False
+        time.sleep(0.5)
+
+    elif (joystick.get_button(4) == 1 and not isTank):
+        print("TANK TIME :)")
+        isTank = True
+        time.sleep(0.5)
 
     dict = {}
 
@@ -50,8 +70,17 @@ while True:
         for i in range(hats):
             hat.append(joystick.get_hat(i))
 
+        #time.sleep(0.25)
 
-        test_pkt = struct.pack('<cffc', b'\r', -dict["left_y"], -dict["right_y"], b'\n')
+        if (isTank):
+            leftPower = filter(dict["left_y"])
+            rightPower = -filter(dict["right_y"])
+        else:
+            leftPower = (filter(dict["left_y"]) - filter(dict["left_x"]))
+            rightPower = -1 * (filter(dict["left_y"]) + filter(dict["left_x"]))
+
+        #test_pkt = struct.pack('<cffc', b'\r', dict["left_y"], -dict["right_y"], b'\n')
+        test_pkt = struct.pack('<cffc', b'\r', leftPower, rightPower, b'\n')
 
         sObj.write(test_pkt)
         returned = sObj.read(64)

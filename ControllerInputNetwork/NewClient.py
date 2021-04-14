@@ -3,7 +3,21 @@ import pickle
 import json
 import os
 
+#https://www.chiefdelphi.com/t/control-all-driving-with-one-joystick/88500/7
+
 import pygame
+
+def filter(dict):
+    for direction in dict:
+        #print(direction)
+        if (abs(dict[direction]) < 0.1):
+            dict[direction] = 0
+
+        #removed left_y
+        if (direction == "right_y"):
+            dict[direction] = -1 * dict[direction]
+
+    return dict
 
 def controllerClient():
     pygame.init()
@@ -58,9 +72,9 @@ def controllerClient():
                     hat.append(joystick.get_hat(i))
                 # print(hat)
 
-            clock.tick(0.5)
+            clock.tick(15)
 
-            data = pickle.dumps(dict)
+            data = pickle.dumps(filter(dict))
 
             s.sendall(data)
 

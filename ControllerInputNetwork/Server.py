@@ -2,11 +2,14 @@ import socket
 import json
 import struct
 import pickle
+import serial
 from multiprocessing import Process
 import os
 
 import time
 
+
+sObj = serial.Serial("COM5", 9600, timeout=0.05)
 
 def controllerServer():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -32,7 +35,14 @@ def controllerServer():
                 dict = pickle.loads(dataBytes)
                 print(dict)
 
-                time.sleep(2)
+                test_pkt = struct.pack('<cffc', b'\r', dict["left_y"], dict["right_y"], b'\n')
+
+                sObj.write(test_pkt)
+
+
+                returned = sObj.read(64)
+
+                #time.sleep(0.25)
 
 
 if __name__ == "__main__":
