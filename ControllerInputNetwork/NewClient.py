@@ -14,7 +14,7 @@ def filter(dict):
             dict[direction] = 0
 
         #removed left_y
-        if (direction == "right_y"):
+        if (direction == "right_y" or direction == "left_y"):
             dict[direction] = -1 * dict[direction]
 
     return dict
@@ -27,7 +27,7 @@ def controllerClient():
     done = False
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect(("127.0.0.1", 25565))
+        s.connect(("192.168.1.59", 25565))
 
         while True:
 
@@ -53,11 +53,6 @@ def controllerClient():
                     axis.append(float('%.3f' % (joystick.get_axis(i))))
                 #print(axis)
 
-                dict = {"left_x": axis[0],
-                        "left_y": axis[1],
-                        "right_x": axis[2],
-                        "right_y": axis[3]}
-
                 # Buttons
                 buttons = joystick.get_numbuttons()
                 button = []
@@ -71,6 +66,12 @@ def controllerClient():
                 for i in range(hats):
                     hat.append(joystick.get_hat(i))
                 # print(hat)
+
+                dict = {"tank" : button[4],
+                        "left_x": axis[0],
+                        "left_y": axis[1],
+                        "right_x": axis[2],
+                        "right_y": axis[3]}
 
             clock.tick(15)
 
