@@ -39,20 +39,20 @@ def controllerServer():
 
                 if (dict["tank"] == 1 and tankMode):
                     print("NOT TANK TIME :(")
-                    isTank = False
+                    tankMode = False
                     time.sleep(0.5)
 
                 elif (dict["tank"] == 1 and not tankMode):
                     print("TANK TIME :)")
-                    isTank = True
+                    tankMode = True
                     time.sleep(0.5)
 
-                if (isTank):
+                if (tankMode):
                     leftPower = -filter(dict["left_y"])
                     rightPower = -filter(dict["right_y"])
                 else:
                     leftPower = (filter(dict["left_y"]) - filter(dict["left_x"]))
-                    rightPower = -1 * (filter(dict["left_y"]) + filter(dict["left_x"]))
+                    rightPower = (filter(dict["left_y"]) + filter(dict["left_x"]))
 
                 # test_pkt = struct.pack('<cffc', b'\r', dict["left_y"], dict["right_y"], b'\n')
                 test_pkt = struct.pack('<cffc', b'\r', leftPower, rightPower, b'\n')
